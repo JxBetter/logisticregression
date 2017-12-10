@@ -1,0 +1,43 @@
+import numpy
+from matplotlib import pyplot
+
+#样本特征
+# X=numpy.array([[0,0],[0,0.5],[0,1],[0,1.5],[0,1.8],[0.5,0.5],[0.5,1],[0.5,1.3],[0.5,1.45],[1,0],[1,0.5],[1,0.9],[1.5,0.1],[1.5,0.2],[1.9,0.05],[3,0],[3,0.5],[2.5,0.5],[2,0.5],[1.5,1],[1.5,0.7],[1,1.3],[1,1.5],[1,1.1],[1,1.2],[0.8,1.4],[0.8,1.5],[0.5,1.7],[0.5,1.8],[0.3,2]])
+X=numpy.random.rand(30,2)*10
+X = numpy.r_[numpy.random.randn(50, 2) - [1.5, 1.5], numpy.random.randn(50, 2) + [1.5, 1.5]]
+#X=numpy.array([[1.2,0],[1.2,0.1],[1.5,0],[1.5,1.2],[2,0.5],[2,1],[2,2.8],[3,6],[3,5.5],[3,5],[1,-0.4],[1,0],[0.5,-1],[0.5,-2.2],[0,-3],[0,-3.8],[0,0],[-1,-7],[-1.5,-7.5],[-2,-10.5]])
+# X=numpy.array([[0,-3.5],[0.5,-2.2],[1,-0.45],[0,-4.2],[0.5,-2.3],[1,-0.55]])
+X=X.T
+Y=numpy.array([[0]*50+[1]*50])
+#权重
+W=numpy.array([[0,0]])
+b=0
+
+for i in range(2000):
+    J=0
+    Z=numpy.dot(W,X)+b
+    A=1/(1+numpy.exp(-Z))
+    dz=A-Y
+    dw=(X*dz)/100
+    dw=dw.sum(axis=1)
+    db=(dz.sum()/100)
+    W=W-1*dw
+    b=b-1*db
+    J=(-(Y*numpy.log(A)+(1-Y)*numpy.log(1-A)))
+    #print W
+    #print b
+    print (J.sum()/100)
+a=numpy.linspace(-10,10)
+k=-W[0][0]/W[0][1]
+bt=-b/W[0][1]
+y=k*a+bt
+
+print("X: ",X,X.shape)
+# print("Y: ",Y,Y.shape)
+# print("W: ",W,W.shape)
+
+
+pyplot.scatter(X[0][0:50],X[1][0:50],c='r')
+pyplot.scatter(X[0][50:100],X[1][50:100],c='y')
+pyplot.plot(a,y,'b')
+pyplot.show()
